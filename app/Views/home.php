@@ -21,8 +21,8 @@
             <div class="uk-width-3-5@s uk-width-2-3@m">
                 <h3 class="uk-h4 uk-text-bold uk-margin-small">Últimas Noticias</h3>
                 <div class="uk-grid-medium uk-child-width-1-1" uk-grid>
-                    <?php if (! empty($articles) && is_array($articles)): ?>
-                        <?php foreach ($articles as $article_item): ?>
+                    <?php if (!empty($articles) && is_array($articles)) : ?>
+                        <?php foreach ($articles as $article_item) : ?>
                             <div>
                                 <div class="uk-card uk-card-default uk-card-hover uk-grid-collapse" uk-grid>
                                     <div class="uk-width-1-3@s uk-card-media-left uk-cover-container">
