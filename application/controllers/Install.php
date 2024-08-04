@@ -26,7 +26,7 @@ class Install extends BS_Controller
     public function index()
     {
         $version      = PHP_VERSION;
-        $checkVersion = version_compare($version, '7.4', '>=');
+        $checkVersion = version_compare($version, '8.0', '>=');
 
         $loadedExtensions   = get_loaded_extensions();
         $requiredExtensions = ['bcmath', 'curl', 'gd', 'gmp', 'mbstring', 'mysqli', 'openssl', 'soap', 'zip'];
