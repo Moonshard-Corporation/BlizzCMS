@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.3'
 
 networks:
   cms-network:
@@ -37,7 +37,7 @@ services:
       - dbserver_data:/var/lib/mysql
       - ./docker/db/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD || exit 1"]
       interval: 5s
       retries: 5
     networks:
@@ -54,11 +54,8 @@ services:
     depends_on:
       dbserver:
         condition: service_healthy
-    volumes:
-      - myadmin_data:/var/www/html
     networks:
       - cms-network
 
 volumes:
   dbserver_data:
-  myadmin_data:
