@@ -39,7 +39,7 @@ class BS_Emulator {
         }
 
         // Load emulator configuration
-        $config_path = self::EMULATOR_CONFIG_PATH . $emulator . '_emulator.yaml';
+        $config_path = self::EMULATOR_CONFIG_PATH . $emulator . '_emulator.yml';
         if (file_exists($config_path)) {
             $this->emulator_config = $this->parse_yaml($config_path);
         } else {
