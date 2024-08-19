@@ -20,8 +20,8 @@ config:
   # - null or any other unspecified value: Defaults to using SHA-1 for hashing, which is less secure.
   #
   # For cMangos, 'hex' is typically used.
-  type: "hex"
-  expansion: 1
+  type: "srp6"
+  expansion: 3
 
 # Column configuration for different tables
 columns:
@@ -30,16 +30,21 @@ columns:
     table: "account"              # Actual table name for 'account'
     id: "id"                      # Unique identifier for the account
     username: "username"          # Username associated with the account
-    salt: "salt"                  # Salt used for password hashing
-    verifier: "verifier"          # Password verifier for authentication
+    gmlevel: "gmlevel"            # GMLevel
+    salt: "s"                     # Salt used for password hashing
+    verifier: "v"                 # Password verifier for authentication
     email: "email"                # Email address associated with the account
     joindate: "joindate"          # Date the account was created
-    last_ip: "last_ip"            # Last IP address used to access the account
-    last_login: "last_login"      # Date and time of the last login
     expansion: "expansion"        # Game expansion associated with the account
-    mutetime: "mutetime"          # Account mute time
-    locale: "locale"              # Client locale (language)
-    os: "os"                      # Operating system of the last login
+
+  account_banned:
+    table: "account_banned"
+    id: "account_id"
+    banreason: "reason"
+    active: "active"
+    bandate: "banned_at"
+    unbandate: "expires_at"
+    bannedby: "banned_by"
 
   arena_team:
     # Mapping of columns for the 'arena_team' table in the cMangos database
@@ -62,7 +67,7 @@ columns:
     member_id: "guid"             # Unique identifier of the team member (character ID)
     played_week: "played_week"    # Games played by the member this week
     won_week: "won_week"          # Games won by the member this week
-    played_season: "played_season"# Games played by the member this season
+    played_season: "played_season" # Games played by the member this season
     won_season: "won_season"      # Games won by the member this season
     personal_rating: "personalRating" # Personal rating of the member
 
@@ -73,17 +78,14 @@ columns:
     account_id: "account"         # Account ID associated with the character
     name: "name"                  # Name of the character
     race: "race"                  # Race of the character
+    gender: "gender"              # Gender of the character
     class: "class"                # Class of the character
+    zone: "zone"                  # Zone of the character
     level: "level"                # Level of the character
     money: "money"                # Amount of money the character possesses
     online: "online"              # Status of the character (online/offline)
     total_played: "totalTime"     # Total time played on this character
     xp: "xp"                      # Current experience points of the character
-    homebind: "homebindMap"       # Homebind map ID (hearthstone location)
-    homebind_zone: "homebindZone" # Homebind zone ID
-    homebind_x: "homebindX"       # Homebind X coordinate
-    homebind_y: "homebindY"       # Homebind Y coordinate
-    homebind_z: "homebindZ"       # Homebind Z coordinate
 
 # SQL queries defined for the emulator
 queries:
