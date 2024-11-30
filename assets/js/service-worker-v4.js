@@ -49,8 +49,7 @@ workbox.routing.registerRoute(
 // Installation event
 self.addEventListener('install', (event) => {
     const urlsToCache = [
-        '/',
-        '/offline.html'
+        '/'
     ];
 
     event.waitUntil(
