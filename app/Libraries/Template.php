@@ -36,6 +36,8 @@ namespace App\Libraries;
 use App\Models\Setting;
 use \Config\Database;
 use \CodeIgniter\Router\Router;
+use \CodeIgniter\View\Parser;
+use \CodeIgniter\HTTP\ResponseInterface;
 
 class Template
 {
@@ -44,155 +46,161 @@ class Template
      * 
      * @var string
      */
-    private $_controller = '';
+    private string $_controller = '';
 
     /**
      * The method name.
      * 
      * @var string
      */
-    private $_method = '';
+    private string $_method = '';
 
     /**
      * The theme to use for rendering.
      * 
      * @var string
      */
-    private $_theme = null;
+    private string $_theme = '';
 
     /**
      * The path to the theme.
      * 
      * @var string
      */
-    private $_themePath = null;
+    private string $_themePath = '';
 
     /**
      * Flag indicating whether to use a layout.
      * 
      * @var bool
      */
-    private $_layout = false;
+    private bool $_layout = false;
 
     /**
      * The subdirectory for layouts and partials.
      * 
      * @var string
      */
-    private $_layoutSubdir = '';
+    private string $_layoutSubdir = '';
 
     /**
      * The title of the page.
      * 
      * @var string
      */
-    private $_title = '';
+    private string $_title = '';
 
     /**
      * Array of head tags.
      * 
      * @var array
      */
-    private $_headTags = [];
+    private array $_headTags = [];
 
     /**
      * Array of body tags.
      * 
      * @var array
      */
-    private $_bodyTags = [];
+    private array $_bodyTags = [];
 
     /**
      * Array of partials to include.
      * 
      * @var array
      */
-    private $_partials = [];
+    private array $_partials = [];
 
     /**
      * Array of breadcrumbs items.
      * 
      * @var array
      */
-    private $_breadcrumbs = [];
+    private array $_breadcrumbs = [];
 
     /**
      * The separator to use for the title.
      * 
      * @var string
      */
-    private $_titleSeparator = ' — ';
+    private string $_titleSeparator = ' — ';
 
     /**
      * Flag indicating whether parsing is enabled.
      * 
      * @var bool
      */
-    private $_parserEnabled = true;
+    private bool $_parserEnabled = true;
 
     /**
      * The parser to use.
      * 
-     * @var null|\CodeIgniter\View\Parser
+     * @var null|Parser
      */
-    private $_parser = null;
+    private null|Parser $_parser = null;
 
     /**
      * Flag indicating whether body parsing is enabled.
      * 
      * @var bool
      */
-    private $_parserBodyEnabled = true;
+    private bool $_parserBodyEnabled = true;
 
     /**
      * Array of theme locations.
      * 
      * @var array
      */
-    private $_themeLocations = [];
+    private array $_themeLocations = [];
 
     /**
      * Flag indicating whether the template is for mobile.
      * 
      * @var bool
      */
-    private $_isMobile = false;
+    private bool $_isMobile = false;
 
     /**
      * The cache lifetime in minutes.
      * 
      * @var int
      */
-    private $cacheLifetime = 0;
+    private int $cacheLifetime = 0;
 
     /**
      * Array of additional data to pass to the view.
      * 
      * @var array
      */
-    private $_data = [];
+    private array $_data = [];
 
     /**
      * Response object.
      * 
-     * @var \CodeIgniter\HTTP\ResponseInterface
+     * @var ResponseInterface
      */
-    private $_response;
+    private ResponseInterface $_response;
 
     /**
      * Flag indicating if exist seo metas.
      * 
      * @var bool
      */
-    private $_seoMetas = false;
-
+    private bool $_seoMetas = false;
 
     /**
      * Flag indicating if exist seo og metas.
      * 
      * @var bool
      */
-    private $_seoOgMetas = false;
+    private bool $_seoOgMetas = false;
+
+    /**
+     * Name of layout.
+     *
+     * @var string
+     */
+    private string $_layoutName = 'default';
 
     public function __construct(array $config = [])
     {
@@ -214,7 +222,7 @@ class Template
      * @return void
      * 
      */
-    private function initialize(array $config)
+    private function initialize(array $config): void
     {
         foreach ($config as $key => $val) {
             $this->{'_' . $key} = $val;
@@ -256,7 +264,7 @@ class Template
      * @param bool $return
      * @return string
      */
-    public function build(string $view, array $data = [], bool $return = false)
+    public function build(string $view, array $data = [], bool $return = false): string
     {
         // Set whatever values are given. These will be available to all view files.
         is_array($data) or $data = (array) $data;
@@ -318,7 +326,7 @@ class Template
             $template['body'] = $this->_body;
 
             // Find the main body an 3rd param means parse if its a theme view (only if parser is enabled)
-            $this->_body = $this->_loadView('layouts/' . $this->_layout, $this->_data, true, $this->_findViewFolder());
+            $this->_body = $this->_loadView('layouts/' . $this->_layoutName, $this->_data, true, $this->_findViewFolder());
         }
 
         return $this->_body;
@@ -810,7 +818,7 @@ class Template
      * @param array $metas
      * @return void
      */
-    public function setSeoMetas($metas)
+    public function setSeoMetas(array $metas): void
     {
         $sitename = configItem('app_name');
 

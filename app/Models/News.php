@@ -39,7 +39,7 @@ class News extends Model
      * 
      * @return array
      */
-    public function latest()
+    public function latest(): array
     {
         $limit = configItem('article_max_recently') ?? 5;
 

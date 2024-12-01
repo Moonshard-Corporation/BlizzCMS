@@ -105,7 +105,7 @@ abstract class BaseController extends Controller
             'parserEnabled' => $configOfTemplate->parserEnabled,
             'parserBodyEnabled' => $configOfTemplate->parserBodyEnabled,
             'titleSeparator' => $configOfTemplate->titleSeparator,
-            'layout' => $configOfTemplate->layout,
+            'layout' => $configOfTemplate->layoutName,
             'theme' => $configOfTemplate->theme,
             'themeLocations' => $configOfTemplate->themeLocations
         ]);

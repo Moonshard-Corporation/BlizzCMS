@@ -4,8 +4,9 @@ namespace App\Libraries;
 
 use App\Models\Setting;
 use CodeIgniter\Files\FileCollection;
-use \Config\Services;
-use \Config\Database;
+use Config\Install;
+use Config\Services;
+use Config\Database;
 
 use function PHPUnit\Framework\isJson;
 
@@ -16,35 +17,35 @@ class Multilanguage
      * 
      * @var string
      */
-    private $defaultLanguage = 'en';
+    private string $defaultLanguage = 'en';
 
     /**
      * Current language
      * 
      * @var string
      */
-    private $currentLanguage;
+    private string $currentLanguage;
 
     /**
      * Supported languages
      * 
      * @var array
      */
-    private $supportedLanguages = [];
+    private array $supportedLanguages = [];
 
     /**
      * Languages
      * 
      * @var array
      */
-    private $languages = [];
+    private array $languages = [];
 
     /**
      * Languages locales
      * 
      * @var array
      */
-    private $locales = [];
+    private array $locales = [];
 
     public function __construct()
     {
@@ -67,14 +68,14 @@ class Multilanguage
         log_message('info', 'Multilanguage library initialized');
     }
 
-    private function _initialize()
+    private function _initialize(): void
     {
         $files = new FileCollection([
             APPPATH . 'Language/'
         ]);
         $files = $files->get();
 
-        $configInstall = new \Config\Install();
+        $configInstall = new Install();
 
         $allowedLanguages = array_merge($this->supportedLanguages, [$this->defaultLanguage]);
 
@@ -107,7 +108,7 @@ class Multilanguage
      * 
      * @return void
      */
-    private function _detectLanguage()
+    private function _detectLanguage(): void
     {
         $session = Services::session();
 
@@ -116,7 +117,7 @@ class Multilanguage
         if (array_key_exists((string) $browserLanguage, $this->languages)) {
             $this->currentLanguage = $browserLanguage;
         } else {
-            $headerLanguage = explode(',', preg_replace('/(;\s?q=[0-9\.]+)|\s/i', '', trim((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])));
+            $headerLanguage = explode(',', preg_replace('/(;\s?q=[0-9.]+)|\s/i', '', trim((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])));
 
             if (count($headerLanguage) === 0) {
                 $this->currentLanguage = $this->defaultLanguage;
@@ -142,7 +143,7 @@ class Multilanguage
      * 
      * @return array
      */
-    public function languages()
+    public function languages(): array
     {
         return $this->languages;
     }
@@ -177,7 +178,7 @@ class Multilanguage
      * @param string $locale
      * @return bool
      */
-    public function setLanguage($locale)
+    public function setLanguage(string $locale): bool
     {
         if (array_key_exists($locale, $this->locales)) {
             $session = Services::session();
@@ -194,7 +195,7 @@ class Multilanguage
      * @param string|null $key
      * @return mixed
      */
-    public function currentLanguage(string $key = null)
+    public function currentLanguage(string $key = null): mixed
     {
         if ($key === null) {
             if (array_key_exists($this->currentLanguage, $this->languages)) {

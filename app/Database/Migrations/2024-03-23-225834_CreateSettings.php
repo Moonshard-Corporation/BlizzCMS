@@ -82,8 +82,8 @@ class CreateSettings extends Migration
             ['key' => 'mailer_account_confirmation', 'value' => 'false', 'type' => 'bool'],
             ['key' => 'seo_tags', 'value' => 'false', 'type' => 'bool'],
             ['key' => 'seo_og_tags', 'value' => 'false', 'type' => 'bool'],
-            ['key' => 'seo_description_tag', 'value' => NULL, 'type' => 'string'],
-            ['key' => 'seo_image_tag', 'value' => NULL, 'type' => 'string']
+            ['key' => 'seo_description_tag', 'value' => '', 'type' => 'string'],
+            ['key' => 'seo_image_tag', 'value' => '', 'type' => 'string']
         ]);
     }
 

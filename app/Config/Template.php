@@ -47,7 +47,7 @@ class Template extends BaseConfig
      *
      * Default: 'default'
      */
-    public string $layout = 'layout';
+    public string $layoutName = 'default';
 
     /**
      * Theme
