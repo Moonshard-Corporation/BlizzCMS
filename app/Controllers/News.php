@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
+use App\Models\NewsComment;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 /**
  * BlizzCMS
@@ -14,7 +15,7 @@ use App\Controllers\BaseController;
 
 class News extends BaseController
 {
-    public function index()
+    public function index(): string
     {
         $inputPage = $this->request->getVar('page') ?? 1;
         $page = ctype_digit((string) $inputPage) ? (int) $inputPage : 1;
@@ -25,7 +26,7 @@ class News extends BaseController
 
         $data = [
             'articles' => $newsModel->paginate($perPage),
-            'pagination' => $newsModel->pager->makeLinks($page, $perPage, $newsModel->countAll(), 'foundation_full'),
+            'pagination' => $newsModel->pager->makeLinks($page, $perPage, $newsModel->countAllResults(), 'foundation_full'),
             'aside' => $newsModel->latest()
         ];
 
@@ -36,19 +37,19 @@ class News extends BaseController
     /**
      * View a single article
      * 
-     * @param int $id
-     * @param string $slug
+     * @param int|null $id
+     * @param string|null $slug
      * @return string
      */
-    public function view($id = null, $slug = null)
+    public function view(int $id = null, string $slug = null): string
     {
         $newsModel = new \App\Models\News();
-        $commentsModel = new \App\Models\NewsComment();
+        $commentsModel = new NewsComment();
 
         $article = $newsModel->where('id', $id)->where('slug', $slug)->first();
 
         if (empty($article)) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            throw PageNotFoundException::forPageNotFound();
         }
 
         $inputPage = $this->request->getVar('page') ?? 1;
@@ -59,7 +60,7 @@ class News extends BaseController
         $data = [
             'article' => $article,
             'comments' => $commentsModel->where('news_id', $id)->paginate($perPage),
-            'pagination' => $commentsModel->pager->makeLinks($page, $perPage, $commentsModel->countAll(), 'foundation_full'),
+            'pagination' => $commentsModel->pager->makeLinks($page, $perPage, $commentsModel->countAllResults(), 'foundation_full'),
             'aside' => $newsModel->latest()
         ];
 
